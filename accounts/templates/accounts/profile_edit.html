@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Edit Profile | {{ current_user.username }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/font_roboto/roboto.css" %}">
+<link rel="stylesheet" href="{% static "css/dhtmlxcalendar.css" %}">
+{% endblock %}
+{% block js %}
+<script type="text/javascript"
+        src="{% static "js/dhtmlxcalendar.js" %}"></script>
+
+<script>
+var myCalendar;
+window.onload = function() {
+    myCalendar = new dhtmlXCalendarObject(["id_date_of_birth"]);
+};
+</script>
+{% endblock %}
+
+{% block body %}
+<form method="POST" action="{% url 'accounts:profile_edit' %}" enctype="multipart/form-data">
+    <p><label for="username">Username:</label> {{ current_user.username }}</p>
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" class="button-primary" value="Save">
+</form>
+{% endblock %}

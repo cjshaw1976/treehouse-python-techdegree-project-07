@@ -1,0 +1,113 @@
+/* links styed as buttons */
+.button-link {
+    color: #fff;
+    background-color: #689b98;
+    font-family: "Work Sans", sans-serif;
+    font-size: 1.6rem;
+    padding: 18px 30px;
+    border: 0;
+    margin-right: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    white-space: nowrap;
+    box-sizing: border-box;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 0 0 2px #689b98 inset;
+    position: relative;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+}
+/* Profile image area */
+.avatar {
+    width: 200px;
+}
+
+/* cropper */
+#content {
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.frame {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.frame > img { width: 100%; }
+
+#controls { margin-bottom: 40px; }
+
+#controls button {
+  margin: 0 5px;
+  min-width: 30px;
+  color: #555;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 30px;
+  padding: 2px;
+}
+
+#controls button:hover { color: #333; }
+
+/* Password strength meter */
+#pwindicator {
+    margin-top: 4px;
+    width: 150px;
+}
+
+.bar {
+    height: 2px;
+}
+
+.pw-very-weak .bar {
+    background: #d00;
+    width: 30px;
+}
+
+.pw-very-weak .label {
+    color: #d00;
+}
+
+.pw-weak .bar {
+    background: #d00;
+    width: 60px;
+}
+
+.pw-weak .label {
+    color: #d00;
+}
+
+.pw-mediocre .bar {
+    background: #f3f01a;
+    width: 90px;
+}
+
+.pw-mediocre .label {
+    color: #f3f01a;
+}
+
+.pw-strong .bar {
+    background: #f3b31a;
+    width: 120px;
+}
+
+.pw-strong .label {
+    color: #f3b31a;
+}
+
+.pw-very-strong .bar {
+    background: #0d0;
+    width: 150px;
+}
+
+.pw-very-strong .label {
+    color: #0d0;
+}

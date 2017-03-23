@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Profile | {{ current_user.username }}{% endblock %}
+
+{% block body %}
+<p><label for="username">Username:</label> {{ current_user.username }}</p>
+<p><label for="date_joined">Date Joined:</label> {{ current_user.date_joined }}</p>
+<p><label for="first_name">First Name:</label> {{ profile.first_name }}</p>
+<p><label for="last_name">Last Name:</label> {{ profile.last_name }}</p>
+<p><label for="email">Email:</label> {{ profile.email }}</p>
+<p><label for="date_of_birth">Date Of Birth:</label> {{ profile.date_of_birth|date:"D d M Y" }}</p>
+<p><label for="short_bio">Bio:</label> {{ profile.short_bio | safe }}</p>
+<p><label for="avatar">Avatar:</label>
+    {% if profile.avatar %}
+    <img class="avatar" src="{{ profile.avatar.url }}" alt="{{ profile.avatar.name }}"></br>
+    <a class="button-link" href="{% url 'accounts:profile_crop' %}">Crop Avatar</a>
+    {% endif %}
+</p>
+<p><label for="city">City:</label> {{ profile.city }}</p>
+<p><label for="state">State:</label> {{ profile.state }}</p>
+<p><label for="country">Country:</label> {{ profile.country }}</p>
+<p><label for="favorite_animal">Favorite Animal:</label> {{ profile.favorite_animal }}</p>
+<p><label for="hobby">Hobby:</label> {{ profile.hobby }}</p>
+<p><a class="button-link" href="{% url 'accounts:profile_edit' %}">Edit Profile</a></p>
+{% endblock %}
