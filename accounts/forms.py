@@ -1,5 +1,6 @@
 import re
 
+from datetime import timedelta
 from django import forms
 from . import models
 from tinymce.widgets import TinyMCE
@@ -10,11 +11,13 @@ pattern = ("^(?=.*?\d)(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#*$@!%])" +
            "[A-Za-z0-9#*@$!%\d]{14,}$")
 password_regex = re.compile(pattern)
 
+
 # Function to claer all <> tags
 def removetags(raw):
-  cleanr = re.compile('<.*?>')
-  cleantext = re.sub(cleanr, '', raw)
-  return cleantext
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw)
+    return cleantext
+
 
 class ProfileForm(forms.ModelForm):
     email = forms.EmailField()
@@ -23,7 +26,8 @@ class ProfileForm(forms.ModelForm):
                                                    '%m/%d/%Y',
                                                    '%m/%d/%y'],
                                     widget=forms.DateInput(format='%Y-%m-%d'))
-    short_bio = forms.CharField(widget=TinyMCE(attrs={'rows': 10}))
+    short_bio = forms.CharField(widget=TinyMCE(attrs={'rows': 10}),
+                                min_length=10)
     avatar = forms.ImageField(required=False)
 
     class Meta:
@@ -45,9 +49,15 @@ class ProfileForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(ProfileForm, self).clean()
+        # Check date is in the Past
+        date_of_birth = cleaned_data.get("date_of_birth")
+        if date_of_birth.year > 2020:
+            adjusted_date = date_of_birth - timedelta(days=36524.25)
+            cleaned_data["date_of_birth"] = adjusted_date
+
         # Work around formatted text length
         short_bio = cleaned_data.get("short_bio")
-        if len(removetags(short_bio)) < 10:
+        if short_bio is None or len(removetags(short_bio)) < 10:
             raise forms.ValidationError("Your Bio must be at least 10 " +
                                         "characters long.")
 
@@ -105,10 +115,10 @@ class PasswordChangeCustomForm(forms.Form):
 
         # Check password does not contain, first, last or usernames
         if ((self.profile.first_name.lower() != '' and
-            self.profile.first_name.lower() in new_password.lower()) or
-            (self.profile.last_name.lower() != '' and
-            self.profile.last_name.lower() in new_password.lower()) or
-            self.user.username.lower() in new_password.lower()):
+                self.profile.first_name.lower() in new_password.lower()) or
+                (self.profile.last_name.lower() != '' and
+                 self.profile.last_name.lower() in new_password.lower()) or
+                self.user.username.lower() in new_password.lower()):
             raise forms.ValidationError(
                 "password cannot contain your username, firstname or lastname")
 

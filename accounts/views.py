@@ -6,10 +6,9 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from PIL import Image, ExifTags
+from PIL import Image
 
 from . import forms
-from . import models
 
 
 def sign_in(request):
@@ -85,12 +84,6 @@ def profile_edit(request):
                 # preprocess uploaded image
                 new_image = str(request.user.userprofile.avatar.file)
                 im = Image.open(new_image)
-                # sort out issue that kept making avata upside down
-                exif = dict((ExifTags.TAGS[k], v)
-                            for k, v in im._getexif().items()
-                            if k in ExifTags.TAGS)
-                if not exif['Orientation']:
-                    im = im.rotate(90, expand=True)
                 # Resize to manageable
                 im.thumbnail((400, 600), Image.ANTIALIAS)
                 im.save(new_image)
@@ -139,7 +132,7 @@ def profile_crop(request):
                 'w': float(form.cleaned_data['w']),
                 'h': float(form.cleaned_data['h'])
             }
-            cropped_image = cropper(original_image, crop_coords)
+            cropper(original_image, crop_coords)
             return render(request, 'accounts/profile.html',
                           {'current_user': user, 'profile': profile})
 
